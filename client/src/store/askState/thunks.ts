@@ -9,11 +9,11 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
   unknown,
-  Action<string>
+  Action
 >;
 
 export function fetchAsks(): AppThunk<void> {
-  return async dispatch => {
+  return dispatch => {
     dispatch(getAsks());
     return http.get('/asks')
       .then(response => dispatch(getAsksSuccess(response.data.asks)))

@@ -8,16 +8,18 @@ interface AskListProps {
     fetching: boolean,
     fetchAsks: () => void
 }
-export const AskList: FunctionComponent<AskListProps> = ({ asks, fetchAsks, fetching }) => {
+export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching, fetchAsks }) => {
     const asksComponents = asks.map((ask, index) => {
         return <div key={index}>
             Request: {ask}
         </div>;
     });
 
+    const fetchingText = fetching ? 'fetching' : '';
+
     return (
         <div>
-            {fetching && "Fetching"}
+            {fetchingText}
             {asksComponents}
             <button onClick={fetchAsks}>get asks</button>
         </div>
