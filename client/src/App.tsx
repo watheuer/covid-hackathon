@@ -4,6 +4,7 @@ import { store } from './store';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import AskList from './asks/AskList';
 import Header from './layout/Header';
+import { Map } from './map/Map';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Provider store={store}>
               <AskList />
             </Provider>
+            <Map />
           </React.Fragment>
         )} />
         <Route exact path='/request' render={props => (
