@@ -6,6 +6,7 @@ import { AskList } from "./AskList";
 import { Button } from "@material-ui/core";
 import { AskMap } from "./AskMap";
 import { Ask } from "../store/askState/types";
+import { useStyles } from "./styles";
 
 interface AskContainer {
   asks: Ask[];
@@ -13,8 +14,9 @@ interface AskContainer {
   fetchAsks: () => void;
 }
 export const AskContainer: FunctionComponent<AskContainer> = ({ asks, fetching, fetchAsks }) => {
+  const classes = useStyles();
   return (
-    <div>
+    <div className={classes.container}>
       <AskList asks={asks} fetching={fetching} />
       <Button onClick={fetchAsks}>Get Asks</Button>
       <AskMap asks={asks} fetching={fetching} />
