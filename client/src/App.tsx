@@ -4,6 +4,7 @@ import { store } from './store';
 import AskContainer from './asks/AskContainer';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Header from './layout/Header';
+import RequestForm from './asks/RequestForm';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         )} />
         <Route exact path='/request' render={props => (
           <React.Fragment>
-            <p>Request Page</p>
+            <RequestForm/>
           </React.Fragment>
         )} />
       </div>
