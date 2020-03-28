@@ -11,27 +11,28 @@ const initialState: AskState = {
 }
 
 export function askStateReducer(state = initialState, action: AskActionTypes): AskState {
+  console.log(action.type);
   switch (action.type) {
     case GET_ASKS: {
       return {
+        ...state,
         fetching: true,
-        ...state
-      }
+      };
     }
 
     case GET_ASKS_SUCCESS: {
       return {
         fetching: false,
         asks: action.asks
-      }
+      };
     }
 
     case GET_ASKS_FAILIURE: {
       console.error(action.msg);  // TODO: error reducer
       return {
+        ...state,
         fetching: false,
-        ...state
-      }
+      };
     }
 
     default: {
