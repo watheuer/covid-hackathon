@@ -5,9 +5,10 @@ import { RootState } from "../store";
 import { AskList } from "./AskList";
 import { Button } from "@material-ui/core";
 import { AskMap } from "./AskMap";
+import { Ask } from "../store/askState/types";
 
 interface AskContainer {
-  asks: string[];
+  asks: Ask[];
   fetching: boolean;
   fetchAsks: () => void;
 }

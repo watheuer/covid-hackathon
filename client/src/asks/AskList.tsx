@@ -2,9 +2,10 @@ import React, { FunctionComponent, useState } from 'react';
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import { useStyles } from './styles';
 import { Restore, LocationOn } from '@material-ui/icons';
+import { Ask } from '../store/askState/types';
 
 export interface AskListProps {
-  asks: string[],
+  asks: Ask[],
   fetching: boolean,
 }
 export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
@@ -19,8 +20,8 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
           <Avatar alt="mask" src="" />
         </ListItemAvatar>
         <ListItemText
-          primary={ask}
-          secondary="Inova Fairfax Hospital is running now on masks."
+          primary={ask.item}
+          secondary={ask.instructions}
         />
       </ListItem>
     );
