@@ -1,37 +1,112 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import logo from './sample-logo.png'
-import CSS from 'csstype';
+import { AppBar, Link, Typography, InputBase, Toolbar, makeStyles, fade, IconButton } from '@material-ui/core';
+import { Search } from '@material-ui/icons';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  links: {
+    color: theme.palette.common.white,
+    '& :visited': {
+      color: theme.palette.common.white
+    },
+    '& a': {
+      textDecoration: 'none',
+      padding: '5px'
+    }
+  },
+  title: {
+    flexGrow: 1,
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+  },
+  iconButton: {
+    marginRight: theme.spacing(2),
+  },
+  icon: {
+    height: '24px',
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  }, 
+}));
 
 export default function Header() {
+  const classes = useStyles();
   return (
-    <header style={headerStyle}>
-      <Link to="/" style={linkStyle} >Home</Link><Link style={linkStyle} to="/donate">Donate</Link><Link style={linkStyle} to="/request">Request</Link> 
-      <img src={logo} style={imageStyle} alt="logo" />
-    </header>
-  )
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar variant="dense">
+          <IconButton edge="start" className={classes.iconButton} color="inherit" aria-label="menu">
+            <img className={classes.icon} src={logo} />
+          </IconButton>
+          <Typography className={classes.title} variant="h5" noWrap>
+            Find Resources
+          </Typography>
+          <div className={classes.links}>
+            <RouterLink to="/">Home</RouterLink>
+            <RouterLink to="/donate">Donate</RouterLink>
+            <RouterLink to="/request">Request</RouterLink>
+          </div>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <Search />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 }
 
-const headerStyle: CSS.Properties = {
-  background: 'linear-gradient(#3399ff, #6666ff)',
-  color: '#fff',
-  textAlign: 'left',
-  padding: '0px 5px',
-  fontSize: '24px',
-}
 
-const linkStyle: CSS.Properties = {
-  color: '#fff',
-  background: 'linear-gradient(#3333ff, #6633ff)',
-  textDecoration: 'none',
-  padding: '0px 50px',
-  borderRadius: '15px 15px 0px 0px'
-}
-
-const imageStyle: CSS.Properties = {
-  padding: '0px, 5px',
-  width: '32px',
-  height: '32px',
-  position: 'absolute',
-  right: '0'
-}
+      // <img src={logo} style={imageStyle} alt="logo" />
