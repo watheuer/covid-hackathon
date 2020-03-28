@@ -1,10 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import AskContainer from './asks/AskContainer';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
-import AskList from './asks/AskList';
 import Header from './layout/Header';
-import RequestForm from './asks/RequestForm';
 
 function App() {
   return (
@@ -20,18 +19,17 @@ function App() {
           <React.Fragment>
             <p>Donate Page</p>
             <Provider store={store}>
-              <AskList />
+              <AskContainer />
             </Provider>
           </React.Fragment>
         )} />
         <Route exact path='/request' render={props => (
           <React.Fragment>
-            <RequestForm />>
+            <p>Request Page</p>
           </React.Fragment>
         )} />
       </div>
     </Router>
-
   );
 }
 
