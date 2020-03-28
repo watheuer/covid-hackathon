@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/watheuer/cards/issues"
   },
-  "homepage": "https://github.com/watheuer/cards#readme"
+  "homepage": "https://github.com/watheuer/cards#readme",
+  "dependencies": {
+    "@types/node": "^13.9.5"
+  }
 }

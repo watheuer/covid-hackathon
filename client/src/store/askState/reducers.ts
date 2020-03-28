@@ -1,8 +1,8 @@
-import { AskActionTypes, GET_ASKS, GET_ASKS_SUCCESS, GET_ASKS_FAILIURE } from './types';
+import { Ask, AskActionTypes, GET_ASKS, GET_ASKS_SUCCESS, GET_ASKS_FAILIURE } from './types';
 
 interface AskState {
   fetching: boolean;
-  asks: string[];
+  asks: Ask[];
 }
 
 const initialState: AskState = {
