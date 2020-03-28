@@ -1,12 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import AskList from './asks/AskList';
+import AskContainer from './asks/AskContainer';
 
 function App() {
   return (
     <Provider store={store}>
-      <AskList />
+      <AskContainer />
     </Provider>
   );
 }

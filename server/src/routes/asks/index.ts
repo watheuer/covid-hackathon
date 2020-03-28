@@ -7,6 +7,37 @@ export const router = Router();
  */
 router.get("/", (req, res, next) => {
   res.send({
-    asks: ['plz send masks', 'some other shit']
+    asks: [
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+      'plz send masks',
+      'we need masks',
+    ]
   });
 });
