@@ -3,7 +3,7 @@ import { AskListProps } from "./AskList";
 import styles from './Asks.module.scss';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicHJoLTIwMjAiLCJhIjoiY2s4Ym8wMWl0MGFxaDNsbzJ6enJvczVuZSJ9.kxCR6p_zzoh-4M1Y6tOAug';
+mapboxgl.accessToken = process.env.REACT_APP_MAP_TOKEN as string;
 type AppProps = {}
 
 interface AppState {
@@ -27,9 +27,7 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
             });
             setMap(map);
             map.resize();
-
             // TODO: reintroduce marker logic
-            // console.log("adding markers in for each");
             // // create a DOM element for the marker
             // var el = document.createElement('div');
             // el.className = 'marker';
