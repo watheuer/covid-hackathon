@@ -1,5 +1,4 @@
-import React, { Component, Props } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicHJoLTIwMjAiLCJhIjoiY2s4Ym8wMWl0MGFxaDNsbzJ6enJvczVuZSJ9.kxCR6p_zzoh-4M1Y6tOAug';
