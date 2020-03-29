@@ -15,7 +15,9 @@ const donatePage = ({ }) => (
 );
 
 const requestPage = ({ }) => (
-  <RequestForm />
+  <Provider store={store}>
+    <RequestForm />
+  </Provider>
 );
 
 function App() {
