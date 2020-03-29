@@ -293,12 +293,12 @@ const labelStyle: CSS.Properties = {
   width: "50%",
   padding: "10px 10px 0px 0px",
   fontFamily: "'Signika', sans-serif",
-  fontSize: "18px"
+  fontSize: "14px"
 }
 
 const inputStyle: CSS.Properties = {
   width: "100%",
-  padding: "8px",
+  padding: "6px",
   border: "1px solid #ccc",
   borderRadius: "4px",
   boxSizing: "border-box",
@@ -319,23 +319,23 @@ const buttonStyle: CSS.Properties = {
 
 const colType: CSS.Properties = {
   float: "left",
-  width: "10%",
+  width: "30%",
   marginTop: "6px"
 }
 
 const colError: CSS.Properties = {
   float: "left",
-  width: "12%",
+  width: "30%",
   marginTop: "6px",
   color: "red",
   fontFamily: "'Signika', sans-serif",
-  fontSize: "14px"
+  fontSize: "12px"
 
 }
 
 const colInput: CSS.Properties = {
   float: "left",
-  width: "78%",
+  width: "40%",
   marginTop: "6px"
 }
 

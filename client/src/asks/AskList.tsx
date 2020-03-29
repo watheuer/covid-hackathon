@@ -4,6 +4,7 @@ import { Restore, LocationOn } from '@material-ui/icons';
 import { Ask } from '../store/askState/types';
 import styles from './Asks.module.scss';
 import RequestForm from './RequestForm';
+import { AskModal } from './AskModal';
 
 export interface AskListProps {
   asks: Ask[],
@@ -16,7 +17,7 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
   const askListItems = asks.map(ask => {
     // TODO: get actual fields from ask
     return (
-      <ListItem>
+      <ListItem >
         <ListItemAvatar>
           <Avatar alt="mask" src="" />
         </ListItemAvatar>
@@ -24,6 +25,7 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
           primary={ask.item}
           secondary={ask.requester}
         />
+        <AskModal ask={ask}/>
       </ListItem>
     );
   });
