@@ -18,8 +18,8 @@ export const AskContainer: FunctionComponent<AskContainer> = ({ asks, fetching, 
   return (
     <div className={classes.container}>
       <AskList asks={asks} fetching={fetching} />
-      <AskMap asks={asks} fetching={fetching} />
       <Button onClick={fetchAsks}>Get Asks</Button>
+      <AskMap asks={asks} fetching={fetching} />
     </div>
   );
 };
