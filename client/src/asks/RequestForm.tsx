@@ -9,7 +9,6 @@ import { Ask } from "../store/askState/types";
 interface RequestFormProps {
   postAsk: (ask: Ask) => void;
 }
-
 const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk }) => {
   const formik = useFormik({
     initialValues: { 

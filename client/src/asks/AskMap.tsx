@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState, useRef, useEffect } from "react";
 import { AskListProps } from "./AskList";
 import styles from './Asks.module.scss';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
@@ -13,75 +13,59 @@ interface AppState {
 }
 
 export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
-    let map: mapboxgl.Map;
-    class ResourceMap extends React.Component<AppProps, AppState> {
-        constructor(props: AppProps) {
-            super(props);
-            this.state = {
-                lng: -77,
-                lat: 39,
-                zoom: 8,
-            };
-        }
+    const [map, setMap] = useState<mapboxgl.Map | null>(null);
+    const mapContainer = useRef<HTMLDivElement | null>(null);
 
-        componentDidMount() {
-            map = new mapboxgl.Map({
-                container: 'map',
+    // Init map effect (only runs on init)
+    useEffect(() => {
+        const initializeMap = () => {
+            const map = new mapboxgl.Map({
+                container: mapContainer.current!,
                 style: 'mapbox://styles/mapbox/outdoors-v11',
-                center: [this.state.lng, this.state.lat],
-                zoom: this.state.zoom
+                center: [-77, 39],
+                zoom: 8
             });
 
-            map.on('move', () => {
-                this.setState({
-                    lng: map.getCenter().lng.toFixed(4) as unknown as number,
-                    lat: map.getCenter().lat.toFixed(4) as unknown as number,
-                    zoom: map.getZoom().toFixed(2) as unknown as number
-                });
+            map.on('load', () => {
+                setMap(map);
+                map.resize();
             });
-            console.log("About to add markers");
-            this.addMarkers();
-        }
 
-        render() {
-            return (
-                <div>
-                    <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
-                    <div id="map" />
-                </div>
-            )
-        }
+            // TODO: reintroduce marker logic
+            // console.log("adding markers in for each");
+            // // create a DOM element for the marker
+            // var el = document.createElement('div');
+            // el.className = 'marker';
+            // // el.style.backgroundImage =
+            // // marker.properties.iconSize.join('/') +
+            // // '/)';
+            // el.style.width = '6px';//marker.properties.iconSize[0] + 'px';
+            // el.style.height = '6px';//marker.properties.iconSize[1] + 'px';
 
-        addMarkers() {
-            if (map != null) {
-                geojson.features.forEach(function (marker) {
-                    console.log("adding markers in for each");
-                    // create a DOM element for the marker
-                    var el = document.createElement('div');
-                    el.className = 'marker';
-                    // el.style.backgroundImage =
-                    // marker.properties.iconSize.join('/') +
-                    // '/)';
-                    el.style.width = '6px';//marker.properties.iconSize[0] + 'px';
-                    el.style.height = '6px';//marker.properties.iconSize[1] + 'px';
+            // el.addEventListener('click', function () {
+            //     window.alert(marker.properties.message);
+            // });
 
-                    el.addEventListener('click', function () {
-                        window.alert(marker.properties.message);
-                    });
+            // // add marker to map
+            // new mapboxgl.Marker(el)
+            //     .setLngLat(marker.geometry.coordinates as LngLatLike)
+            //     .addTo(map);
+        };
 
-                    // add marker to map
-                    new mapboxgl.Marker(el)
-                        .setLngLat(marker.geometry.coordinates as LngLatLike)
-                        .addTo(map);
-                });
-            }
-        }
-    }
+        if (!map) initializeMap();
+    }, [map, setMap, mapContainer]);
+
+    // Resize window effect
+    useEffect(() => {
+        const listener = (e: UIEvent) => map!.resize();
+        window.addEventListener('resize', listener);
+
+        // Cleanup function
+        return () => window.removeEventListener('resize', listener);
+    }, [map]);
 
     return (
-        <div className={styles.mapRoot}>
-            <ResourceMap />
-        </div>
+        <div className={styles.mapRoot} ref={mapContainer}></div>
     );
 }
 
