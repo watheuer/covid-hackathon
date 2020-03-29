@@ -1,22 +1,11 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom';
 import logo from './sample-logo.png'
-import { AppBar, Link, Typography, InputBase, Toolbar, makeStyles, fade, IconButton } from '@material-ui/core';
+import { AppBar, Typography, InputBase, Toolbar, makeStyles, fade, IconButton } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-  },
-  links: {
-    color: theme.palette.common.white,
-    '& :visited': {
-      color: theme.palette.common.white
-    },
-    '& a': {
-      textDecoration: 'none',
-      padding: '5px'
-    }
   },
   title: {
     flexGrow: 1,
@@ -84,11 +73,6 @@ export default function Header() {
           <Typography className={classes.title} variant="h5" noWrap>
             Find Resources
           </Typography>
-          <div className={classes.links}>
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/donate">Donate</RouterLink>
-            <RouterLink to="/request">Request</RouterLink>
-          </div>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <Search />

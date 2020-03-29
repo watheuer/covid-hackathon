@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useState } from 'react';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, BottomNavigation, BottomNavigationAction } from "@material-ui/core";
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, BottomNavigation, BottomNavigationAction, Modal, Button } from "@material-ui/core";
 import { Restore, LocationOn } from '@material-ui/icons';
 import { Ask } from '../store/askState/types';
 import styles from './Asks.module.scss';
+import RequestForm from './RequestForm';
 
 export interface AskListProps {
   asks: Ask[],
@@ -10,6 +11,7 @@ export interface AskListProps {
 }
 export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
   const [navValue, setNavValue] = useState('recents');
+  const [isOpen, setIsOpen] = useState(false);
 
   const askListItems = asks.map(ask => {
     // TODO: get actual fields from ask
@@ -26,15 +28,37 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
     );
   });
 
+  const close = () => {
+    setIsOpen(false);
+  };
+
+  const open = () => {
+    setIsOpen(true);
+  };
+
   return (
     <div className={styles.listRoot}>
-      <List className={styles.askList}>
-        {askListItems}
-      </List>
-      <BottomNavigation value={navValue} onChange={(event, newValue) => setNavValue(newValue)} showLabels>
-        <BottomNavigationAction label="Recents" value="recents" icon={<Restore />} />
-        <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOn />} />
-      </BottomNavigation>
+      <div className={styles.listHeader}>
+        <Button onClick={open}>Make a request</Button>
+        <Modal
+          open={isOpen}
+          onClose={close}
+        >
+          <div className={styles.modal}>
+            <RequestForm close={close} />
+          </div>
+        </Modal>
+      </div>
+
+      <div className={styles.listContent}>
+        <List className={styles.askList}>
+          {askListItems}
+        </List>
+        <BottomNavigation value={navValue} onChange={(event, newValue) => setNavValue(newValue)} showLabels>
+          <BottomNavigationAction label="Recents" value="recents" icon={<Restore />} />
+          <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOn />} />
+        </BottomNavigation>
+      </div>
     </div>
   );
 };
