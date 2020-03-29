@@ -20,7 +20,7 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
         </ListItemAvatar>
         <ListItemText
           primary={ask.item}
-          secondary={ask.instructions}
+          secondary={ask.requester}
         />
       </ListItem>
     );
