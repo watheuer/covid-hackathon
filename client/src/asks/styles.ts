@@ -22,9 +22,9 @@ export const useStyles = makeStyles(theme => ({
   mapRoot: {
     position: 'absolute',
     top: 0,
-    left: 0,
+    left: 400,
     height: '100%',
-    width: '100%',
+    width: '75%',
     zIndex: -1
   },
   askList: {
