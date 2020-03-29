@@ -1,6 +1,7 @@
 [
     {
         "id" : 1,
+        "requester" : "Daniel",
         "item": "mask",
         "open": true,
         "email": "hospital1@gmail.com",
@@ -19,6 +20,7 @@
     },
     {
         "id" : 2,
+        "requester": "Daniel",
         "item": "toilet_paper",
         "open": true,
         "email": "hospital2@gmail.com",

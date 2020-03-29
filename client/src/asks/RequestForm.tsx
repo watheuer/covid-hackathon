@@ -16,6 +16,7 @@ interface Location {
 
 interface FormResponse {
   id: number;
+  requester: string;
   item: string;
   open: boolean;
   email: string;
@@ -29,6 +30,7 @@ export default function RequestForm() {
   const formik = useFormik({
     initialValues: { 
       id: 0,
+      requester: "",
       item: "",
       open: true,
       email: "",
@@ -55,6 +57,8 @@ export default function RequestForm() {
       (
         {
         id: Yup.number(),
+        requester: Yup.string()
+          .required('Requester is required'),
         open: Yup.bool(),
         email: Yup.string()
           .email('The format must be a valid email xx@xx.xx')
@@ -92,6 +96,7 @@ export default function RequestForm() {
     
   });  
   return (
+    
     <form style={requestStyle} onSubmit={formik.handleSubmit}>
       <label style={labelStyle} htmlFor="email">Email Address</label>
       <input style={inputStyle}
@@ -102,6 +107,16 @@ export default function RequestForm() {
         value={formik.values.email}
       />
       {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+
+      <label style={labelStyle} htmlFor="requester">Requester Name</label>
+      <input style={inputStyle}
+        id="requester"
+        name="requester"
+        type="text"
+        onChange={formik.handleChange}
+        value={formik.values.requester}
+      />
+      {formik.errors.requester ? <div>{formik.errors.requester}</div> : null}
 
       <label style={labelStyle} htmlFor="item">Item Type</label> 
       <input style={inputStyle}

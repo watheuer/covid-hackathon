@@ -17,6 +17,7 @@ export interface GetAsksFailureAction {
 
 export interface Ask {
   id: number;
+  requester: string;
   item: string;
   open: boolean;
   email: string;

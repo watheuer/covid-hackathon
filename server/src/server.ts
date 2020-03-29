@@ -10,7 +10,7 @@ import errorMiddleware from './middlewares/error.middleware';
 import validateEnv from './utils/validateEnv';
 import { router } from './routes';
 
-validateEnv();
+//validateEnv();
 
 const app = express();
 const server = http.createServer(app);
