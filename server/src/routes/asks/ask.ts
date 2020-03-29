@@ -5,6 +5,7 @@ const fs = require('fs');
 
 export interface Ask {
   id : number,
+  requester: string,
   item : string,
   open : boolean,
   email? : string,
@@ -79,6 +80,7 @@ export function deleteAsk(id : number): boolean {
 
 export function isValidAsk(obj : any): boolean {
   return obj.id !== undefined &&
+      obj.requester !== undefined &&
       obj.item !== undefined &&
       obj.open !== undefined &&
       obj.email !== undefined &&
