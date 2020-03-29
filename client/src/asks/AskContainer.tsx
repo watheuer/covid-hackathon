@@ -16,7 +16,7 @@ export const AskContainer: FunctionComponent<AskContainer> = ({ asks, fetching, 
   // Fetch asks only on initial render
   useEffect(() => {
     fetchAsks();
-  }, []); // empty dependency array to fire only once
+  }, [fetchAsks]);
 
   return (
     <div className={styles.container}>

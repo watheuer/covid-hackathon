@@ -8,8 +8,9 @@ import { Ask } from "../store/askState/types";
 
 interface RequestFormProps {
   postAsk: (ask: Ask) => void;
+  close?: () => void;
 }
-const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk }) => {
+const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk, close }) => {
   const formik = useFormik({
     initialValues: { 
       id: 0,
@@ -34,6 +35,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk }) => {
       alert(JSON.stringify(values, null, 2));
       console.log(values)
       postAsk(values);
+      if (close) close();
     },
     validationSchema: 
       Yup.object().shape
