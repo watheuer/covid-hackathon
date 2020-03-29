@@ -25,7 +25,7 @@ export const useStyles = makeStyles(theme => ({
     left: 400,
     height: '100%',
     width: '75%',
-    zIndex: -1
+    zIndex: 1
   },
   askList: {
     maxHeight: '100%',
