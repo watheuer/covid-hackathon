@@ -1,31 +1,15 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import CSS from 'csstype';
 import { useFormik } from "formik";
-import { http } from "../store/http";
 import * as Yup from 'yup';
+import { connect } from "react-redux";
+import { postAsk } from "../store/askState/thunks";
+import { Ask } from "../store/askState/types";
 
-interface Location {
-  street_address: string,
-  city: string,
-  zip: number,
-  state: string,
-  country: string,
-  lat: number,
-  long: number
+interface RequestFormProps {
+  postAsk: (ask: Ask) => void;
 }
-
-interface FormResponse {
-  id: number;
-  item: string;
-  open: boolean;
-  email: string;
-  phone: string;
-  location: Location
-  instructions: string;
-  timestamp: string;
-}
-
-export default function RequestForm() {
+const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk }) => {
   const formik = useFormik({
     initialValues: { 
       id: 0,
@@ -48,7 +32,7 @@ export default function RequestForm() {
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
       console.log(values)
-      console.log(http.post("/asks", values));
+      postAsk(values);
     },
     validationSchema: 
       Yup.object().shape
@@ -211,3 +195,10 @@ const buttonStyle: CSS.Properties = {
   height: "auto",
   padding: "0px 0px 0px 0px"
 }
+
+export default connect(
+  state => ({}), // mapStateToProps
+  {              // mapDispatchToProps
+    postAsk: postAsk
+  }
+)(RequestForm);
