@@ -1,99 +1,96 @@
 import React from "react";
 import CSS from 'csstype';
 import { useFormik } from "formik";
+import { http } from "../store/http";
+import * as Yup from 'yup';
 
-interface FormResponse {
-  email: string;
-  item: string;
-  phone: string;
-  street_address: string;
-  city: string;
-  zip: string;
-  state: string;
-  country: string;
-  instructions: string;
+interface Location {
+  street_address: string,
+  city: string,
+  zip: number,
+  state: string,
+  country: string,
+  lat: number,
+  long: number
 }
 
-var valid_items = ["masks","volunteers"]
-var valid_country = ["Usa", "usa", "USA", "United States", "United States of America"]
-
-const validate = (values : FormResponse) => {
-  const errors = {} as FormResponse;
-
-  //validate email
-  if(!values.email){
-    errors.email = 'Required'
-  }
-  else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-
-  //validate item type
-  if(!values.item){
-    errors.item = 'Item type is required'
-  }
-  else if(valid_items.indexOf(values.item) === -1){
-    errors.item = "Invalid Item Type supplied. Valid Item types are masks and volunteers";
-  }
-
-  //validate phone number - currently only validates that it is x-x-x, should also support other formats
-  if(!/^[0-9]{3}-[0-9]{3}-[0-9]{4}/i.test(values.phone)){
-    errors.phone = "Invalid Phone Number. Valid phone number format is xxx-xxx-xxxx";
- }
-
-  //validate street address
-  if(!values.street_address){
-    errors.street_address = "Street Address is Required"
-  }
-
-  //validate city
-  if (!values.city) {
-    errors.city = "City is Required"
-  }
-
-  //validate zip
-  if (!values.zip) {
-    errors.zip = "Zip Code is Required"
-  }
-  else if (!/^[0-9]{5}(?:-[0-9]{4})?$/i.test(values.zip)){
-    errors.zip = "Zip Code format is xxxxx or xxxxx-xxxx"
-  }
-
-  //validate state
-  if (!values.state) {
-    errors.state = "State is Required"
-  }
-
-  //validate country
-  if (!values.country) {
-    errors.country = "Country is Required"
-  }
-  else if (valid_country.indexOf(values.country) === -1) {
-    errors.country = "Only USA is supported currently."
-  }
-
-  //validate instructions (none?)
-  return errors;
+interface FormResponse {
+  id: number;
+  item: string;
+  open: boolean;
+  email: string;
+  phone: string;
+  location: Location
+  instructions: string;
+  timestamp: string;
 }
 
 export default function RequestForm() {
   const formik = useFormik({
     initialValues: { 
-      email: "",
+      id: 0,
       item: "",
+      open: true,
+      email: "",
       phone: "",
-      street_address: "",
-      city: "",
-      zip: "",
-      state: "",
-      country: "",
-      instructions: ""
+      location: {
+        street_address: "",
+        city: "",
+        zip: 0,
+        state: "",
+        country: "",
+        lat: 0,
+        long: 0
+      },
+      instructions: "",
+      timestamp: "no"
     },
-    validate,
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
-    }
-  });
+      console.log(values)
+      console.log(http.post("/asks", values));
+    },
+    validationSchema: 
+      Yup.object().shape
+      (
+        {
+        id: Yup.number(),
+        open: Yup.bool(),
+        email: Yup.string()
+          .email('The format must be a valid email xx@xx.xx')
+          .required('Email address is required'),
+        item: Yup.string()
+          .required('Item type is required')
+          .matches(/(masks|toilet paper)/i, "Only accepted item types are masks and toilet paper"),
+        phone: Yup.string()
+          .length(10,"Must be a valid phone number of 10 digits")
+          .matches(/^[0-9]{10}/, "Must be a valid phone number of 10 digits"),
+        location: Yup.object().shape
+        (
+          {
+            street_address: Yup.string()
+              .required('Street address is required'),
+            city: Yup.string()
+              .required('City is required'),
+            zip: Yup.number()
+              .min(10000, 'Must be a valid five digit zip code')
+              .max(99999, 'Must be a valid five digit zip code')
+              .required('Required'),
+            state: Yup.string()
+              .required('State is required'),
+            country: Yup.string()
+              .required('City is required')
+              .matches(/(usa|united states)/i, "Must be usa"),
+            lat: Yup.number(),
+            long: Yup.number()        
+          }
+        ),
+        instructions: Yup.string(),
+        timestamp: Yup.string()
+        }
+      ) 
+    
+  });  
   return (
     <form style={requestStyle} onSubmit={formik.handleSubmit}>
       <label style={labelStyle} htmlFor="email">Email Address</label>
@@ -129,52 +126,52 @@ export default function RequestForm() {
       <label style={labelStyle} htmlFor="street_address">Street Address</label>
       <input style={inputStyle}
         id="street_address"
-        name="street_address"
+        name="location.street_address"
         type="text"
         onChange={formik.handleChange}
-        value={formik.values.street_address}
+        value={formik.values.location.street_address}
       />
-      {formik.errors.street_address ? <div>{formik.errors.street_address}</div> : null}
+      {formik.errors.location?.street_address ? <div>{formik.errors.location?.street_address}</div> : null}
 
       <label style={labelStyle} htmlFor="city">City</label>
       <input style={inputStyle}
         id="city"
-        name="city"
+        name="location.city"
         type="text"
         onChange={formik.handleChange}
-        value={formik.values.city}
+        value={formik.values.location.city}
       />
-      {formik.errors.city ? <div>{formik.errors.city}</div> : null}
+      {formik.errors.location?.city ? <div>{formik.errors.location?.city}</div> : null}
 
       <label style={labelStyle} htmlFor="zip">Zip Code</label>
       <input style={inputStyle}
         id="zip"
-        name="zip"
-        type="text"
+        name="location.zip"
+        type="number"
         onChange={formik.handleChange}
-        value={formik.values.zip}
+        value={formik.values.location.zip}
       />
-      {formik.errors.zip ? <div>{formik.errors.zip}</div> : null}
+      {formik.errors.location?.zip ? <div>{formik.errors.location?.zip}</div> : null}
 
       <label style={labelStyle} htmlFor="state">State</label>
       <input style={inputStyle}
         id="state"
-        name="state"
+        name="location.state"
         type="text"
         onChange={formik.handleChange}
-        value={formik.values.state}
+        value={formik.values.location.state}
       />
-      {formik.errors.state ? <div>{formik.errors.state}</div> : null}
+      {formik.errors.location?.state ? <div>{formik.errors.location?.state}</div> : null}
 
       <label style={labelStyle} htmlFor="country">Country</label>
       <input style={inputStyle}
         id="country"
-        name="country"
+        name="location.country"
         type="text"
         onChange={formik.handleChange}
-        value={formik.values.country}
+        value={formik.values.location.country}
       />
-      {formik.errors.country ? <div>{formik.errors.country}</div> : null}
+      {formik.errors.location?.country ? <div>{formik.errors.location?.country}</div> : null}
 
       <label style={labelStyle} htmlFor="instructions">Additional Instructions</label>
       <input style={inputStyle}
