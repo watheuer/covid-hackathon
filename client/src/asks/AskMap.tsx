@@ -25,11 +25,8 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
                 center: [-77, 39],
                 zoom: 8
             });
-
-            map.on('load', () => {
-                setMap(map);
-                map.resize();
-            });
+            setMap(map);
+            map.resize();
 
             // TODO: reintroduce marker logic
             // console.log("adding markers in for each");
@@ -57,7 +54,9 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
 
     // Resize window effect
     useEffect(() => {
-        const listener = (e: UIEvent) => map!.resize();
+        const listener = (e: UIEvent) => {
+            if (map) map.resize();
+        }
         window.addEventListener('resize', listener);
 
         // Cleanup function

@@ -2,18 +2,17 @@ $navbar-height: 48px;
 
 .container {
     position: absolute;
-    justify-content: space-between;
-    align-items: stretch;
-    display: flex;
     width: 100%;
     top: 48px;
     height: calc(100% - #{$navbar-height});
 }
 
+$list-width: 300px;
 .listRoot {
+    float: left;
+    width: $list-width;
     height: 100%;
-    width: 32ch;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: white;
@@ -33,7 +32,9 @@ $navbar-height: 48px;
 }
 
 .mapRoot {
-    flex-grow: 1;
+    display: inline-block;
+    width: calc(100% - #{$list-width});
+    height: 100%;
 }
 
 .askList {
