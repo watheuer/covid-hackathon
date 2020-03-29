@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { AskListProps } from "./AskList";
-import { useStyles } from "./styles";
+import styles from './Asks.module.scss';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicHJoLTIwMjAiLCJhIjoiY2s4Ym8wMWl0MGFxaDNsbzJ6enJvczVuZSJ9.kxCR6p_zzoh-4M1Y6tOAug';
@@ -78,9 +78,8 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
         }
     }
 
-    const classes = useStyles();
     return (
-        <div className={classes.mapRoot}>
+        <div className={styles.mapRoot}>
             <ResourceMap />
         </div>
     );
