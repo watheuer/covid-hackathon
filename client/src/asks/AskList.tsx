@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, BottomNavigation, BottomNavigationAction, Modal, Button } from "@material-ui/core";
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, BottomNavigation, BottomNavigationAction, Modal, Button, Paper, Box } from "@material-ui/core";
 import { Restore, LocationOn } from '@material-ui/icons';
 import { Ask } from '../store/askState/types';
 import styles from './Asks.module.scss';
@@ -22,6 +22,9 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
         </ListItemAvatar>
         <ListItemText
           primary={ask.item}
+          primaryTypographyProps={{
+            color: 'textPrimary'
+          }}
           secondary={ask.requester}
         />
       </ListItem>

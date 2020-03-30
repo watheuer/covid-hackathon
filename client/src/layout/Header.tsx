@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import logo from './sample-logo.png'
-import { AppBar, Typography, InputBase, Toolbar, makeStyles, fade, IconButton } from '@material-ui/core';
+import { AppBar, Typography, InputBase, Toolbar, makeStyles, fade, IconButton, Theme } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +61,8 @@ const useStyles = makeStyles(theme => ({
   }, 
 }));
 
-export default function Header() {
+interface HeaderProps {};
+const Header: FunctionComponent<HeaderProps> = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -92,5 +93,4 @@ export default function Header() {
   );
 }
 
-
-      // <img src={logo} style={imageStyle} alt="logo" />
+export default Header;
