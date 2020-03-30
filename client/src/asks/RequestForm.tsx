@@ -22,7 +22,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk, close }) =>
       location: {
         street_address: "",
         city: "",
-        zip: 0,
+        zip: 10000,
         state: "",
         country: "",
         lat: 0,
@@ -48,8 +48,8 @@ const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk, close }) =>
           .email('The format must be a valid email xx@xx.xx')
           .required('Email address is required'),
         item: Yup.string()
-          .required('Item type is required')
-          .matches(/(masks|toilet paper)/i, "Only accepted item types are masks and toilet paper"),
+          .required('Item type is required'),
+          //.matches(/(masks|toilet paper)/i, "Only accepted item types are masks and toilet paper"),
         phone: Yup.string()
           .length(10,"Must be a valid phone number of 10 digits")
           .matches(/^[0-9]{10}/, "Must be a valid phone number of 10 digits"),
@@ -66,9 +66,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk, close }) =>
               .required('Required'),
             state: Yup.string()
               .required('State is required'),
-            country: Yup.string()
-              .required('City is required')
-              .matches(/(usa|united states)/i, "Must be usa"),
+            country: Yup.string(),
             lat: Yup.number(),
             long: Yup.number()        
           }
@@ -292,12 +290,12 @@ const labelStyle: CSS.Properties = {
   width: "50%",
   padding: "10px 10px 0px 0px",
   fontFamily: "'Signika', sans-serif",
-  fontSize: "18px"
+  fontSize: "14px"
 }
 
 const inputStyle: CSS.Properties = {
   width: "100%",
-  padding: "8px",
+  padding: "6px",
   border: "1px solid #ccc",
   borderRadius: "4px",
   boxSizing: "border-box",
@@ -318,23 +316,23 @@ const buttonStyle: CSS.Properties = {
 
 const colType: CSS.Properties = {
   float: "left",
-  width: "10%",
+  width: "30%",
   marginTop: "6px"
 }
 
 const colError: CSS.Properties = {
   float: "left",
-  width: "12%",
+  width: "30%",
   marginTop: "6px",
   color: "red",
   fontFamily: "'Signika', sans-serif",
-  fontSize: "14px"
+  fontSize: "12px"
 
 }
 
 const colInput: CSS.Properties = {
   float: "left",
-  width: "78%",
+  width: "40%",
   marginTop: "6px"
 }
 
