@@ -4,6 +4,19 @@ import { store } from './store';
 import AskContainer from './asks/AskContainer';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './layout/Header';
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#3282b8'
+    },
+    secondary: {
+      main: '#3282b8'
+    }
+  }
+});
 
 const donatePage = ({ }) => (
   <Provider store={store}>
@@ -19,13 +32,15 @@ const donatePage = ({ }) => (
 
 function App() {
   return (
-    <Router>
-      <div className='App'>
-        <Header />
-        <Route exact path='/' render={donatePage} />
-        {/* <Route exact path='/request' render={requestPage} /> */}
-      </div>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div className='App'>
+          <Header />
+          <Route exact path='/' render={donatePage} />
+          {/* <Route exact path='/request' render={requestPage} /> */}
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
