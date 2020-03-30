@@ -1,16 +1,15 @@
 import React, { FunctionComponent, useState, useRef, useEffect } from "react";
 import { AskListProps } from "./AskList";
 import styles from './Asks.module.scss';
+import Geocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { askStateReducer } from "../store/askState/reducers";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_TOKEN as string;
 type AppProps = {}
 
-interface AppState {
-    lng: number,
-    lat: number,
-    zoom: number
-}
+let centerDefaultCoordinates: LngLatLike = [-77, 39];
 
 export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
@@ -22,29 +21,11 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
             const map = new mapboxgl.Map({
                 container: mapContainer.current!,
                 style: 'mapbox://styles/mapbox/outdoors-v11',
-                center: [-77, 39],
+                center: centerDefaultCoordinates,
                 zoom: 8
             });
             setMap(map);
             map.resize();
-            // TODO: reintroduce marker logic
-            // // create a DOM element for the marker
-            // var el = document.createElement('div');
-            // el.className = 'marker';
-            // // el.style.backgroundImage =
-            // // marker.properties.iconSize.join('/') +
-            // // '/)';
-            // el.style.width = '6px';//marker.properties.iconSize[0] + 'px';
-            // el.style.height = '6px';//marker.properties.iconSize[1] + 'px';
-
-            // el.addEventListener('click', function () {
-            //     window.alert(marker.properties.message);
-            // });
-
-            // // add marker to map
-            // new mapboxgl.Marker(el)
-            //     .setLngLat(marker.geometry.coordinates as LngLatLike)
-            //     .addTo(map);
         };
 
         if (!map) initializeMap();
@@ -61,47 +42,50 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
         return () => window.removeEventListener('resize', listener);
     }, [map]);
 
-    return (
-        <div className={styles.mapRoot} ref={mapContainer}></div>
-    );
-}
+    asks.forEach(function (ask) {
+        let lngLat: LngLatLike;
+        let location = ask.location;
+        let address: string = location.street_address + " " + location.city + ", " +
+            location.state + " " + location.zip;
+        Geocoding({ accessToken: mapboxgl.accessToken })
+            .forwardGeocode({
+                query: address,
+                mode: "mapbox.places",
+                proximity: centerDefaultCoordinates as number[],
+                autocomplete: false,
+                limit: 1
+            })
+            .send()
+            .then(function (response) {
+                if (
+                    response &&
+                    response.body &&
+                    response.body.features &&
+                    response.body.features.length) {
+                    var feature = response.body.features[0];
 
-// Test data
-var geojson = {
-    'type': 'FeatureCollection',
-    'features': [
-        {
-            'type': 'Feature',
-            'properties': {
-                'message': 'Foo',
-                'iconSize': [60, 60]
-            },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [-77.0, 39]
-            }
-        },
-        {
-            'type': 'Feature',
-            'properties': {
-                'message': 'Bar',
-                'iconSize': [50, 50]
-            },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [-77.1, 39]
-            }
-        },
-        {
-            'type': 'Feature',
-            'properties': {
-                'message': 'Baz',
-                'iconSize': [40, 40]
-            },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [-77.2, 39]
-            }
-        }
-    ]
-};
+                    lngLat = feature.center;
+                    let popupHtml: string = `<strong>${ask.requester}</strong><p>Item: ${ask.item}<p>Address: ${address}<p>` +
+                        `Email: ${ask.email}<p>Phone: ${ask.phone}<p>Instructions: ${ask.instructions}`;
+
+                    // create a HTML element for each feature
+                    var mapMarkerElement = document.createElement('div');
+                    mapMarkerElement.className = styles.mapMarker;
+
+                    var popupElement = document.createElement('div');
+                    popupElement.className = styles.popup;
+                    let popup: mapboxgl.Popup = new mapboxgl.Popup()
+                        .setLngLat(lngLat)
+                        .setHTML(popupHtml)
+                        .addTo(map as mapboxgl.Map);
+
+                    new mapboxgl.Marker(mapMarkerElement)
+                        .setLngLat(lngLat)
+                        .setPopup(popup)
+                        .addTo(map as mapboxgl.Map);
+                }
+            });
+    });
+
+    return (<div className={styles.mapRoot} ref={mapContainer}></div>);
+}

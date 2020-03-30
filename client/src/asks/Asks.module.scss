@@ -33,6 +33,19 @@ $list-width: 300px;
     overflow: auto;
 }
 
+.mapMarker {
+    background-image: url('images/map-marker.png');
+    background-size: cover;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.popup {
+    z-index: 2;
+}
+
 .mapRoot {
     display: inline-block;
     width: calc(100% - #{$list-width});

@@ -32,7 +32,6 @@ const RequestForm: FunctionComponent<RequestFormProps> = ({ postAsk, close }) =>
       timestamp: "no"
     },
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
       console.log(values)
       postAsk(values);
       if (close) close();
