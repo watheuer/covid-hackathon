@@ -41,13 +41,22 @@ $navbar-height: 48px;
     overflow: auto;
 }
 
-$modal-width: 72ch;
-$modal-height: 64ch;
-.modal {
+$request-modal-width: 72ch;
+$request-modal-height: 48ch;
+.requestmodal {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: $modal-width;
-    height: $modal-height;
+    transform: translate(-90%, -90%);
+    width: $request-modal-width;
+    height: $request-modal-height;
+}
+
+.requestmodal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-90%, -90%);
+    width: $request-modal-width;
+    height: $request-modal-height;
 }

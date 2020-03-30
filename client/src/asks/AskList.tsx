@@ -17,15 +17,15 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
   const askListItems = asks.map(ask => {
     // TODO: get actual fields from ask
     return (
-      <ListItem >
+      <ListItem>
         <ListItemAvatar>
           <Avatar alt="mask" src="" />
         </ListItemAvatar>
         <ListItemText
-          primary={ask.item}
-          secondary={ask.requester}
+          primary={ask.requester}
+          secondary={<AskModal ask={ask}/>}
         />
-        <AskModal ask={ask}/>
+        
       </ListItem>
     );
   });
@@ -46,7 +46,7 @@ export const AskList: FunctionComponent<AskListProps> = ({ asks, fetching }) => 
           open={isOpen}
           onClose={close}
         >
-          <div className={styles.modal}>
+          <div className={styles.requestmodal}>
             <RequestForm close={close} />
           </div>
         </Modal>
