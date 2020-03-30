@@ -4,6 +4,7 @@ import styles from './Asks.module.scss';
 import Geocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { askStateReducer } from "../store/askState/reducers";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_TOKEN as string;
 type AppProps = {}
@@ -25,49 +26,6 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
             });
             setMap(map);
             map.resize();
-
-            asks.forEach(function (ask) {
-                let lngLat: LngLatLike;
-                let location = ask.location;
-                let address: string = location.street_address + " " + location.city + ", " +
-                    location.state + " " + location.zip;
-                Geocoding({ accessToken: mapboxgl.accessToken })
-                    .forwardGeocode({
-                        query: address,
-                        mode: "mapbox.places",
-                        proximity: centerDefaultCoordinates as number[],
-                        autocomplete: false,
-                        limit: 1
-                    })
-                    .send()
-                    .then(function (response) {
-                        if (
-                            response &&
-                            response.body &&
-                            response.body.features &&
-                            response.body.features.length) {
-                            var feature = response.body.features[0];
-
-                            lngLat = feature.center;
-                            let popupHtml: string = `<strong>${ask.requester}</strong><p>Item: ${ask.item}<p>Address: ${address}<p>` +
-                                `Email: ${ask.email}<p>Phone: ${ask.phone}<p>Instructions: ${ask.instructions}`;
-
-                            // create a HTML element for each feature
-                            var mapMarker = document.createElement('div');
-                            mapMarker.className = styles.mapMarker;
-
-                            let popup: mapboxgl.Popup = new mapboxgl.Popup()
-                                .setLngLat(lngLat)
-                                .setHTML(popupHtml)
-                                .addTo(map);
-
-                            new mapboxgl.Marker(mapMarker)
-                                .setLngLat(lngLat)
-                                .setPopup(popup)
-                                .addTo(map);
-                        }
-                    });
-            });
         };
 
         if (!map) initializeMap();
@@ -84,7 +42,50 @@ export const AskMap: FunctionComponent<AskListProps> = ({ asks, fetching }) => {
         return () => window.removeEventListener('resize', listener);
     }, [map]);
 
-    return (
-        <div className={styles.mapRoot} ref={mapContainer}></div>
-    );
+    asks.forEach(function (ask) {
+        let lngLat: LngLatLike;
+        let location = ask.location;
+        let address: string = location.street_address + " " + location.city + ", " +
+            location.state + " " + location.zip;
+        Geocoding({ accessToken: mapboxgl.accessToken })
+            .forwardGeocode({
+                query: address,
+                mode: "mapbox.places",
+                proximity: centerDefaultCoordinates as number[],
+                autocomplete: false,
+                limit: 1
+            })
+            .send()
+            .then(function (response) {
+                if (
+                    response &&
+                    response.body &&
+                    response.body.features &&
+                    response.body.features.length) {
+                    var feature = response.body.features[0];
+
+                    lngLat = feature.center;
+                    let popupHtml: string = `<strong>${ask.requester}</strong><p>Item: ${ask.item}<p>Address: ${address}<p>` +
+                        `Email: ${ask.email}<p>Phone: ${ask.phone}<p>Instructions: ${ask.instructions}`;
+
+                    // create a HTML element for each feature
+                    var mapMarkerElement = document.createElement('div');
+                    mapMarkerElement.className = styles.mapMarker;
+
+                    var popupElement = document.createElement('div');
+                    popupElement.className = styles.popup;
+                    let popup: mapboxgl.Popup = new mapboxgl.Popup()
+                        .setLngLat(lngLat)
+                        .setHTML(popupHtml)
+                        .addTo(map as mapboxgl.Map);
+
+                    new mapboxgl.Marker(mapMarkerElement)
+                        .setLngLat(lngLat)
+                        .setPopup(popup)
+                        .addTo(map as mapboxgl.Map);
+                }
+            });
+    });
+
+    return (<div className={styles.mapRoot} ref={mapContainer}></div>);
 }
