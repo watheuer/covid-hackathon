@@ -27,6 +27,7 @@ export function postAsk(ask: Ask): AppThunk<void> {
     dispatch(createAsk());
     http.post("/asks", ask)
       .then(response => dispatch(createAskSuccess(response.data)))
+        .then(() => dispatch(fetchAsks()))
       .catch(error => dispatch(createAskFailure(error)));
   };
 }
